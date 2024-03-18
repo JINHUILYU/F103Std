@@ -50,14 +50,14 @@ else ()
 endif ()
 
 include_directories(
-        Libraries/CMSIS/Device/ST/STM32F1xx/Include
+        Libraries/CMSIS/Device/ST/STM32F10x/Include
         Libraries/CMSIS/Include
-        Libraries/STM32F1xx_StdPeriph_Driver/inc
+        Libraries/STM32F10x_StdPeriph_Driver/inc
         Peripheral/Inc
-        User/Include
+        User/Inc
 )
 
-add_definitions(-DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F103xB)
+add_definitions(-DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD)
 
 file(GLOB_RECURSE SOURCES "Libraries/*.*" "User/*.*" "Startup/*.*" "Peripheral/*.*")
 
