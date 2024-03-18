@@ -5,7 +5,8 @@
 //#define Exp_5 // 光敏传感器控制蜂鸣器
 //#define Exp_6 // OLED显示
 //#define Exp_7 // 对射式红外传感器
-#define Exp_8 // 旋转编码器
+//#define Exp_8 // 旋转编码器
+#define Exp_9 // 定时器定时中断
 
 #ifdef Exp_1
 #include "stm32f10x.h"
@@ -56,6 +57,17 @@
 #include "Delay.h"
 
 int16_t Num = 0;
+#endif
+
+#ifdef Exp_9
+#include "stm32f10x.h"
+#include "Timer.h"
+#include "Delay.h"
+#include "OLED.h"
+
+uint16_t Num = 0;
+
+void TIM2_IRQHandler(void);
 #endif
 
 int main(void) {
@@ -199,4 +211,22 @@ int main(void) {
         OLED_ShowNum(1, 7, Num, 5);
     }
 #endif
+
+#ifdef Exp_9
+    Timer_Init();
+    OLED_Init();
+    OLED_ShowString(1, 1, "Num:"); // 在第1行第1列显示字符串Count:
+    while (1) {
+        OLED_ShowNum(1, 5, Num, 5);
+    }
+#endif
 }
+
+#ifdef Exp_9
+void TIM2_IRQHandler(void) {
+    if (TIM_GetITStatus(TIM2, TIM_IT_Update) == SET) {
+        Num++;
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+    }
+}
+#endif
