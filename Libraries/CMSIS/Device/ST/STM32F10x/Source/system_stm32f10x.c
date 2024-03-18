@@ -61,7 +61,7 @@
   * @{
   */
 
-#include "../../Libraries/CMSIS/Device/ST/STM32F10x/Include/stm32f10x.h"
+#include "stm32f10x.h"
 
 /**
   * @}
