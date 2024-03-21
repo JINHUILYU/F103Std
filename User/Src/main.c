@@ -6,7 +6,7 @@
 //#define Exp_6 // OLED显示
 //#define Exp_7 // 对射式红外传感器
 //#define Exp_8 // 旋转编码器
-#define Exp_9 // 定时器定时中断
+//#define Exp_9 // 定时器定时中断
 
 #ifdef Exp_1
 #include "stm32f10x.h"
@@ -72,7 +72,7 @@ void TIM2_IRQHandler(void);
 
 int main(void) {
 #ifdef Exp_1
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); // 使能GPIOC时钟
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;

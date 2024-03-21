@@ -57,7 +57,7 @@ include_directories(
         User/Inc
 )
 
-add_definitions(-DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD)
+add_definitions(-DDEBUG -DSTM32F103xB -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD)
 
 file(GLOB_RECURSE SOURCES "Libraries/*.*" "User/*.*" "Startup/*.*" "Peripheral/*.*")
 
