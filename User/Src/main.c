@@ -7,6 +7,9 @@
 //#define Exp_7 // 对射式红外传感器
 //#define Exp_8 // 旋转编码器
 //#define Exp_9 // 定时器定时中断
+//#define Exp_10 // 串口发送
+#define Exp_11 // 串口发送+接收
+
 
 #ifdef Exp_1
 #include "stm32f10x.h"
@@ -68,6 +71,24 @@ int16_t Num = 0;
 uint16_t Num = 0;
 
 void TIM2_IRQHandler(void);
+#endif
+
+#ifdef Exp_10
+#include "stm32f10x.h"
+#include "Delay.h"
+#include "OLED.h"
+#include "Serial.h"
+
+uint8_t RxData;			//定义用于接收串口数据的变量
+#endif
+
+#ifdef Exp_11
+#include "stm32f10x.h"
+#include "Delay.h"
+#include "OLED.h"
+#include "Serial.h"
+
+uint8_t RxData;			//定义用于接收串口数据的变量
 #endif
 
 int main(void) {
@@ -220,6 +241,65 @@ int main(void) {
         OLED_ShowNum(1, 5, Num, 5);
     }
 #endif
+
+#ifdef Exp_10
+    /*模块初始化*/
+    OLED_Init();						//OLED初始化
+
+    Serial_Init();						//串口初始化
+
+    /*串口基本函数*/
+    Serial_SendByte(0x41);				//串口发送一个字节数据0x41
+
+    uint8_t MyArray[] = {0x42, 0x43, 0x44, 0x45};	//定义数组
+    Serial_SendArray(MyArray, 4);		//串口发送一个数组
+
+    Serial_SendString("\r\nNum1=");		//串口发送字符串
+
+    Serial_SendNumber(111, 3);			//串口发送数字
+
+    /*下述3种方法可实现printf的效果*/
+
+    /*方法1：直接重定向printf，但printf函数只有一个，此方法不能在多处使用*/
+    printf("\r\nNum2=%d", 222);			//串口发送printf打印的格式化字符串
+    //需要重定向fputc函数，并在工程选项里勾选Use MicroLIB
+
+    /*方法2：使用sprintf打印到字符数组，再用串口发送字符数组，此方法打印到字符数组，之后想怎么处理都可以，可在多处使用*/
+    char String[100];					//定义字符数组
+    sprintf(String, "\r\nNum3=%d", 333);//使用sprintf，把格式化字符串打印到字符数组
+    Serial_SendString(String);			//串口发送字符数组（字符串）
+
+    /*方法3：将sprintf函数封装起来，实现专用的printf，此方法就是把方法2封装起来，更加简洁实用，可在多处使用*/
+    Serial_Printf("\r\nNum4=%d", 444);	//串口打印字符串，使用自己封装的函数实现printf的效果
+    Serial_Printf("\r\n");
+
+    while (1)
+    {
+
+    }
+#endif
+
+#ifdef Exp_11
+    /*模块初始化*/
+    OLED_Init();		//OLED初始化
+
+    /*显示静态字符串*/
+    OLED_ShowString(1, 1, "RxData:");
+
+    /*串口初始化*/
+    Serial_Init();		//串口初始化
+
+    while (1)
+    {
+        if (Serial_GetRxFlag() == 1)			//检查串口接收数据的标志位
+        {
+            RxData = Serial_GetRxData();		//获取串口接收的数据
+            Serial_SendByte(RxData);			//串口将收到的数据回传回去，用于测试
+            OLED_ShowHexNum(1, 8, RxData, 2);	//显示串口接收的数据
+        }
+    }
+#endif
+
 }
 
 #ifdef Exp_9
