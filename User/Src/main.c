@@ -1,95 +1,4 @@
-//#define Exp_1 // LED闪烁
-//#define Exp_2 // LED流水灯
-//#define Exp_3 // 蜂鸣器
-//#define Exp_4 // 按键控制LED
-//#define Exp_5 // 光敏传感器控制蜂鸣器
-//#define Exp_6 // OLED显示
-//#define Exp_7 // 对射式红外传感器
-//#define Exp_8 // 旋转编码器
-//#define Exp_9 // 定时器定时中断
-//#define Exp_10 // 串口发送
-#define Exp_11 // 串口发送+接收
-
-
-#ifdef Exp_1
-#include "stm32f10x.h"
-#include "Delay.h"
-#endif
-
-#ifdef Exp_2
-#include "stm32f10x.h"
-#include "Delay.h"
-#endif
-
-#ifdef Exp_3
-#include "stm32f10x.h"
-#include "Delay.h"
-#endif
-
-#ifdef Exp_4
-#include "stm32f10x.h"
-#include "Delay.h"
-#include "LED.h"
-#include "Key.h"
-#endif
-
-#ifdef Exp_5
-#include "stm32f10x.h"
-#include "Delay.h"
-#include "Buzzer.h"
-#include "LightSensor.h"
-#endif
-
-#ifdef Exp_6
-#include "stm32f10x.h"
-#include "Delay.h"
-#include "OLED.h"
-#endif
-
-#ifdef Exp_7
-#include "stm32f10x.h"
-#include "Delay.h"
-#include "CountSensor.h"
-#include "OLED.h"
-#endif
-
-#ifdef Exp_8
-#include "stm32f10x.h"
-#include "Encoder.h"
-#include "OLED.h"
-#include "Delay.h"
-
-int16_t Num = 0;
-#endif
-
-#ifdef Exp_9
-#include "stm32f10x.h"
-#include "Timer.h"
-#include "Delay.h"
-#include "OLED.h"
-
-uint16_t Num = 0;
-
-void TIM2_IRQHandler(void);
-#endif
-
-#ifdef Exp_10
-#include "stm32f10x.h"
-#include "Delay.h"
-#include "OLED.h"
-#include "Serial.h"
-
-uint8_t RxData;			//定义用于接收串口数据的变量
-#endif
-
-#ifdef Exp_11
-#include "stm32f10x.h"
-#include "Delay.h"
-#include "OLED.h"
-#include "Serial.h"
-
-uint8_t RxData;			//定义用于接收串口数据的变量
-#endif
+#include "main.h"
 
 int main(void) {
 #ifdef Exp_1
@@ -297,6 +206,70 @@ int main(void) {
             Serial_SendByte(RxData);			//串口将收到的数据回传回去，用于测试
             OLED_ShowHexNum(1, 8, RxData, 2);	//显示串口接收的数据
         }
+    }
+#endif
+
+#ifdef Exp_12
+    OLED_Init();
+    PWM_Init();
+    while (1) {
+        for (int i = 0; i <= 100; i++) {
+            PWM_SetCompare1(i);
+            Delay_ms(10);
+        }
+        for (int i = 100; i >= 0; i--) {
+            PWM_SetCompare1(i);
+            Delay_ms(10);
+        }
+    }
+#endif
+
+#ifdef Exp_13
+    OLED_Init();
+    Servo_Init();
+    Key_Init();
+    uint8_t KeyNum;
+    float Angle;
+    OLED_ShowString(1, 1, "Angle:");
+    Servo_SetAngle(90);
+    while (1) {
+        KeyNum = Key_GetNum();
+        if (KeyNum == 1) {
+            Angle += 30;
+            if (Angle > 180) {
+                Angle = 0;
+            }
+            Servo_SetAngle(Angle);
+        }
+        Servo_SetAngle(Angle);
+        OLED_ShowNum(1, 7, Angle, 3);
+    }
+#endif
+
+#ifdef Exp_14
+    OLED_Init();
+    Motor_Init();
+    Key_Init();
+
+    uint8_t KeyNum;
+    int8_t Speed;
+
+    OLED_ShowString(1, 1, "Speed:");
+
+    while (1) {
+        KeyNum = Key_GetNum();				//获取按键键码
+        if (KeyNum == 1)					//按键1按下
+        {
+            Speed += 20;					//速度变量自增20
+            if (Speed > 100)				//速度变量超过100后
+            {
+                Speed = -100;				//速度变量变为-100
+                //此操作会让电机旋转方向突然改变，可能会因供电不足而导致单片机复位
+                //若出现了此现象，则应避免使用这样的操作
+            }
+        }
+        Motor_SetSpeed(Speed);				//设置直流电机的速度为速度变量
+        OLED_ShowSignedNum(1, 7, Speed, 3);	//OLED显示速度变量
     }
 #endif
 
