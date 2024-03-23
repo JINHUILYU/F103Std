@@ -18,16 +18,13 @@ void PWM_Init() {
 //	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);		// 将JTAG引脚失能，作为普通GPIO引脚使用
 
     GPIO_InitTypeDef GPIO_InitStructure;
-#ifdef Exp_12
+#if defined(Exp_12) || defined(Exp_15) || defined(Exp_16)
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0; // PWM呼吸灯
     //    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15; // 重映射前为GPIO_Pin_0;
-#endif
-
-#ifdef Exp_13
+#elif defined(Exp_13)
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1; // PWM驱动舵机
-#endif
 
-#ifdef Exp_14
+#elif defined(Exp_14)
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2; // PWM驱动电机
 #endif
 
@@ -35,18 +32,19 @@ void PWM_Init() {
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
+    /*配置时钟源*/
+    TIM_InternalClockConfig(TIM2);
+
     TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
-#ifdef Exp_12
+#if defined(Exp_12) || defined(Exp_15) || defined(Exp_16)
     TIM_TimeBaseInitStructure.TIM_Period = 100 - 1;                            // 计数周期，即ARR的值
     TIM_TimeBaseInitStructure.TIM_Prescaler = 720 - 1;                           // 预分频器，即PSC的值
-#endif
 
-#ifdef Exp_13
+#elif defined(Exp_13)
     TIM_TimeBaseInitStructure.TIM_Period = 20000 - 1;                            // 计数周期，即ARR的值
     TIM_TimeBaseInitStructure.TIM_Prescaler = 72 - 1;
-#endif
 
-#ifdef Exp_14
+#elif defined(Exp_14)
     TIM_TimeBaseInitStructure.TIM_Period = 100 - 1;                            // 计数周期，即ARR的值
     TIM_TimeBaseInitStructure.TIM_Prescaler = 36 - 1;                           // 预分频器，即PSC的值
 #endif
@@ -62,15 +60,13 @@ void PWM_Init() {
     TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;               // 输出使能
     TIM_OCInitStructure.TIM_Pulse = 0;                                       // 设置CCR寄存器的值
     TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;                   // 输出极性
-#ifdef Exp_12
+#if defined(Exp_12) || defined(Exp_15) || defined(Exp_16)
     TIM_OC1Init(TIM2, &TIM_OCInitStructure);
-#endif
 
-#ifdef Exp_13
+#elif defined(Exp_13)
     TIM_OC2Init(TIM2, &TIM_OCInitStructure);
-#endif
 
-#ifdef Exp_14
+#elif defined(Exp_14)
     TIM_OC3Init(TIM2, &TIM_OCInitStructure);
 #endif
 
@@ -92,4 +88,16 @@ void PWM_SetCompare2(uint16_t Compare) {
 
 void PWM_SetCompare3(uint16_t Compare) {
     TIM_SetCompare3(TIM2, Compare);
+}
+
+/**
+  * 函    数：PWM设置PSC
+  * 参    数：Prescaler 要写入的PSC的值，范围：0~65535
+  * 返 回 值：无
+  * 注意事项：PSC和ARR共同决定频率，此函数仅设置PSC的值，并不直接是频率
+  *           频率Freq = CK_PSC / (PSC + 1) / (ARR + 1)
+  */
+void PWM_SetPrescaler(uint16_t Prescaler)
+{
+    TIM_PrescalerConfig(TIM2, Prescaler, TIM_PSCReloadMode_Immediate);		//设置PSC的值
 }

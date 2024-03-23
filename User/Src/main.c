@@ -1,7 +1,7 @@
 #include "main.h"
 
 int main(void) {
-#ifdef Exp_1
+#if defined(Exp_1)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 
     GPIO_InitTypeDef GPIO_InitStructure;
@@ -27,9 +27,8 @@ int main(void) {
         GPIO_WriteBit(GPIOA, GPIO_Pin_0, (BitAction)1);
         Delay_ms(500);
     }
-#endif
 
-#ifdef Exp_2
+#elif defined(Exp_2)
     // 使能GPIOA的时钟
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 
@@ -58,9 +57,8 @@ int main(void) {
         GPIO_Write(GPIOA, ~0x0080); // 0000 0000 1000 0000，PA7引脚为低电平，其他引脚均为高电平
         Delay_ms(100);
     }
-#endif
 
-#ifdef Exp_3
+#elif defined(Exp_3)
     // 使能GPIOB的时钟
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 
@@ -77,9 +75,8 @@ int main(void) {
         GPIO_SetBits(GPIOB, GPIO_Pin_12); // 将PB12引脚置高电平，蜂鸣器不响
         Delay_ms(100);
     }
-#endif
 
-#ifdef Exp_4
+#elif defined(Exp_4)
     Key_Init();
     LED_Init();
 
@@ -95,9 +92,8 @@ int main(void) {
                 break;
         }
     }
-#endif
 
-#ifdef Exp_5
+#elif defined(Exp_5)
     LightSensor_Init();
     Buzzer_Init();
 
@@ -108,9 +104,8 @@ int main(void) {
             Buzzer_OFF();
         }
     }
-#endif
 
-#ifdef Exp_6
+#elif defined(Exp_6)
     OLED_Init();
     OLED_ShowChar(1, 1, 'A'); // 在第1行第1列显示字符A
     OLED_ShowString(1, 3, "Hello, World!");    // 在第1行第3列显示字符串Hello, World!
@@ -119,9 +114,8 @@ int main(void) {
     OLED_ShowHexNum(3, 1, 0xAA55, 4);  // 在第3行第1列显示十六进制数字0xA5A5，长度为4
     OLED_ShowBinNum(4, 1, 0xAA55, 16); // 在第4行第1列显示二进制数字0xA5A5，长度为16
     while (1);
-#endif
 
-#ifdef Exp_7
+#elif defined(Exp_7)
     CountSensor_Init();
     OLED_Init();
 
@@ -130,9 +124,8 @@ int main(void) {
     while (1) {
         OLED_ShowNum(1, 7, CountSensor_GetCount(), 5);
     }
-#endif
 
-#ifdef Exp_8
+#elif defined(Exp_8)
     Encoder_Init();
     OLED_Init();
     OLED_ShowString(1, 1, "Count:"); // 在第1行第1列显示字符串Count:
@@ -140,18 +133,16 @@ int main(void) {
         Num += Encoder_GetCount();
         OLED_ShowNum(1, 7, Num, 5);
     }
-#endif
 
-#ifdef Exp_9
+#elif defined(Exp_9)
     Timer_Init();
     OLED_Init();
     OLED_ShowString(1, 1, "Num:"); // 在第1行第1列显示字符串Count:
     while (1) {
         OLED_ShowNum(1, 5, Num, 5);
     }
-#endif
 
-#ifdef Exp_10
+#elif defined(Exp_10)
     /*模块初始化*/
     OLED_Init();						//OLED初始化
 
@@ -186,9 +177,7 @@ int main(void) {
     {
 
     }
-#endif
-
-#ifdef Exp_11
+#elif defined(Exp_11)
     /*模块初始化*/
     OLED_Init();		//OLED初始化
 
@@ -207,9 +196,8 @@ int main(void) {
             OLED_ShowHexNum(1, 8, RxData, 2);	//显示串口接收的数据
         }
     }
-#endif
 
-#ifdef Exp_12
+#elif defined(Exp_12)
     OLED_Init();
     PWM_Init();
     while (1) {
@@ -222,9 +210,8 @@ int main(void) {
             Delay_ms(10);
         }
     }
-#endif
 
-#ifdef Exp_13
+#elif defined(Exp_13)
     OLED_Init();
     Servo_Init();
     Key_Init();
@@ -244,9 +231,8 @@ int main(void) {
         Servo_SetAngle(Angle);
         OLED_ShowNum(1, 7, Angle, 3);
     }
-#endif
 
-#ifdef Exp_14
+#elif defined(Exp_14)
     OLED_Init();
     Motor_Init();
     Key_Init();
@@ -270,6 +256,30 @@ int main(void) {
         }
         Motor_SetSpeed(Speed);				//设置直流电机的速度为速度变量
         OLED_ShowSignedNum(1, 7, Speed, 3);	//OLED显示速度变量
+    }
+
+#elif defined(Exp_15)
+    OLED_Init();
+    PWM_Init();
+    InputCapture_Init();
+    OLED_ShowString(1, 1, "Freq:00000Hz");
+    PWM_SetPrescaler(360 - 1); // PWM频率Freq = 72M / (PSC + 1) / 100
+    PWM_SetCompare1(50); // PWM占空比Duty = CCR / 100
+    while (1) {
+        OLED_ShowNum(1, 6, InputCapture_GetFreq(), 5);
+    }
+
+#elif defined(Exp_16)
+    OLED_Init();
+    PWM_Init();
+    InputCapture_Init();
+    OLED_ShowString(1, 1, "Freq:00000Hz");
+    OLED_ShowString(2, 1, "Duty:00%");
+    PWM_SetPrescaler(360 - 1); // PWM频率Freq = 72M / (PSC + 1) / 100
+    PWM_SetCompare1(20); // PWM占空比Duty = CCR / 100
+    while (1) {
+        OLED_ShowNum(1, 6, InputCapture_GetFreq(), 5);
+        OLED_ShowNum(2, 6, InputCapture_GetDuty(), 2);
     }
 #endif
 

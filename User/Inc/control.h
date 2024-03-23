@@ -19,5 +19,7 @@
 //#define Exp_12 // PWM呼吸灯
 //#define Exp_13 // PWM驱动舵机
 //#define Exp_14 // PWM驱动直流电机
+//#define Exp_15 // 输入捕获模式测频率
+#define Exp_16 // PWMI模式测频率占空比
 
 #endif //F103STD_CONTROL_H

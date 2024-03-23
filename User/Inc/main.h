@@ -7,58 +7,50 @@
 
 #include "control.h"
 
-#ifdef Exp_1
+#if defined(Exp_1)
 #include "stm32f10x.h"
 #include "Delay.h"
-#endif
 
-#ifdef Exp_2
+#elif defined(Exp_2)
 #include "stm32f10x.h"
 #include "Delay.h"
-#endif
 
-#ifdef Exp_3
+#elif defined(Exp_3)
 #include "stm32f10x.h"
 #include "Delay.h"
-#endif
 
-#ifdef Exp_4
+#elif defined(Exp_4)
 #include "stm32f10x.h"
 #include "Delay.h"
 #include "LED.h"
 #include "Key.h"
-#endif
 
-#ifdef Exp_5
+#elif defined(Exp_5)
 #include "stm32f10x.h"
 #include "Delay.h"
 #include "Buzzer.h"
 #include "LightSensor.h"
-#endif
 
-#ifdef Exp_6
+#elif defined(Exp_6)
 #include "stm32f10x.h"
 #include "Delay.h"
 #include "OLED.h"
-#endif
 
-#ifdef Exp_7
+#elif defined(Exp_7)
 #include "stm32f10x.h"
 #include "Delay.h"
 #include "CountSensor.h"
 #include "OLED.h"
-#endif
 
-#ifdef Exp_8
+#elif defined(Exp_8)
 #include "stm32f10x.h"
 #include "Encoder.h"
 #include "OLED.h"
 #include "Delay.h"
 
 int16_t Num = 0;
-#endif
 
-#ifdef Exp_9
+#elif defined(Exp_9)
 #include "stm32f10x.h"
 #include "Timer.h"
 #include "Delay.h"
@@ -67,46 +59,56 @@ int16_t Num = 0;
 uint16_t Num = 0;
 
 void TIM2_IRQHandler(void);
-#endif
 
-#ifdef Exp_10
+#elif defined(Exp_10)
 #include "stm32f10x.h"
 #include "Delay.h"
 #include "OLED.h"
 #include "Serial.h"
 
 uint8_t RxData;			//定义用于接收串口数据的变量
-#endif
 
-#ifdef Exp_11
+#elif defined(Exp_11)
 #include "stm32f10x.h"
 #include "Delay.h"
 #include "OLED.h"
 #include "Serial.h"
 
 uint8_t RxData;			//定义用于接收串口数据的变量
-#endif
 
-#ifdef Exp_12
+#elif defined(Exp_12)
 #include "stm32f10x.h"
 #include "PWM.h"
 #include "Delay.h"
 #include "OLED.h"
-#endif
 
-#ifdef Exp_13
+#elif defined(Exp_13)
 #include "stm32f10x.h"
 #include "Servo.h"
 #include "Delay.h"
 #include "OLED.h"
 #include "Key.h"
-#endif
 
-#ifdef Exp_14
+#elif defined(Exp_14)
 #include "stm32f10x.h"
 #include "Motor.h"
 #include "OLED.h"
 #include "Key.h"
+
+#elif defined(Exp_15)
+#include "stm32f10x.h"
+#include "Delay.h"
+#include "OLED.h"
+#include "InputCapture.h"
+
+#elif defined(Exp_16)
+#include "stm32f10x.h"
+#include "Delay.h"
+#include "OLED.h"
+#include "PWM.h"
+#include "InputCapture.h"
+
 #endif
+
 
 #endif //F103STD_MAIN_H
