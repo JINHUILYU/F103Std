@@ -113,6 +113,7 @@ uint8_t RxData;			//定义用于接收串口数据的变量
 #include "OLED.h"
 #include "Delay.h"
 #include "MyI2C.h"
+#include "MPU6050.h"
 
 #endif
 

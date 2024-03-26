@@ -283,15 +283,20 @@ int main(void) {
     }
 
 #elif defined(Exp_17)
+    int16_t AX, AY, AZ, GX, GY, GZ;
     OLED_Init();
-    MyI2C_Init();
-    MyI2C_Start();
-    MyI2C_SendByte(0xD0); // 1101 000 0
-    uint8_t ACK = MyI2C_ReceiveACK();
-    MyI2C_Stop();
-    OLED_ShowNum(1, 1, ACK, 3);
+    MPU6050_Init();
+    OLED_ShowString(1, 1, "ID:");		//显示静态字符串
+    uint8_t ID = MPU6050_GetID();				//获取MPU6050的ID号
+    OLED_ShowHexNum(1, 4, ID, 2);		//OLED显示ID号
     while (1) {
-
+        MPU6050_GetData(&AX, &AY, &AZ, &GX, &GY, &GZ);		//获取MPU6050的数据
+        OLED_ShowSignedNum(2, 1, AX, 5);					//OLED显示数据
+        OLED_ShowSignedNum(3, 1, AY, 5);
+        OLED_ShowSignedNum(4, 1, AZ, 5);
+        OLED_ShowSignedNum(2, 8, GX, 5);
+        OLED_ShowSignedNum(3, 8, GY, 5);
+        OLED_ShowSignedNum(4, 8, GZ, 5);
     }
 
 #endif
