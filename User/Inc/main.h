@@ -108,6 +108,12 @@ uint8_t RxData;			//定义用于接收串口数据的变量
 #include "PWM.h"
 #include "InputCapture.h"
 
+#elif defined(Exp_17)
+#include "stm32f10x.h"
+#include "OLED.h"
+#include "Delay.h"
+#include "MyI2C.h"
+
 #endif
 
 

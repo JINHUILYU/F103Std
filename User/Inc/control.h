@@ -20,6 +20,7 @@
 //#define Exp_13 // PWM驱动舵机
 //#define Exp_14 // PWM驱动直流电机
 //#define Exp_15 // 输入捕获模式测频率
-#define Exp_16 // PWMI模式测频率占空比
+//#define Exp_16 // PWMI模式测频率占空比
+#define Exp_17 // 软件I2C读写MPU6050
 
 #endif //F103STD_CONTROL_H

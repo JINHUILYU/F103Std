@@ -281,6 +281,19 @@ int main(void) {
         OLED_ShowNum(1, 6, InputCapture_GetFreq(), 5);
         OLED_ShowNum(2, 6, InputCapture_GetDuty(), 2);
     }
+
+#elif defined(Exp_17)
+    OLED_Init();
+    MyI2C_Init();
+    MyI2C_Start();
+    MyI2C_SendByte(0xD0); // 1101 000 0
+    uint8_t ACK = MyI2C_ReceiveACK();
+    MyI2C_Stop();
+    OLED_ShowNum(1, 1, ACK, 3);
+    while (1) {
+
+    }
+
 #endif
 
 }
